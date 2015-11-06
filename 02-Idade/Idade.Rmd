@@ -1,0 +1,134 @@
+---
+title: "Mortes de acordo com a idade"
+output: html_document
+runtime: shiny
+---
+
+
+## Curva de distribuição da idade de óbitos por causa
+
+Na seção a partir da escolha das opções: Ano, Causa da morte e Estado, é gerado um gráfico que realiza uma distinção pelo gênero e uma tabela de apoio, que contém algumas estatísticas descritivas, que auxiliam na análise dos dados do DATASUS. A tabela contém: o total bruto, porcentagem, média e mediana da quantidade de mortes, separadas pelo sexo do indivíduo. 
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+
+
+if (!file.exists("../dados_processados/idade.Rda"))
+{
+  load("../dados_processados/datasus_processado.rda")
+
+
+  datasus_processado$CAUSABAS1 <- substring(datasus_processado$CAUSABAS,1,3)
+  
+  load("../dados_processados/cidGrupoLista.rda")
+  
+  datasus_processado$CIDGrupo <- NA
+  
+  for (i in 1:length(cidGrupoLista))
+  {
+    datasus_processado$CIDGrupo[datasus_processado$CAUSABAS1 %in% cidGrupoLista[[i]]] <- names(cidGrupoLista)[i]
+  }
+
+  idade <- datasus_processado[,c("IDADE1","SEXO1","CIDGrupo","CAUSABAS1","Estado","Ano")]
+  
+  names(idade)[names(idade)=="CIDGrupo"] <- "Causa"
+
+save(idade,file="../dados_processados/idade.Rda")
+
+}  
+
+load("../dados_processados/idade.Rda")
+```
+
+
+
+
+
+#### Selecione o ano e a causa da morte (escolha no menu ou digite):
+
+```{r,echo=FALSE,message=FALSE}
+library(shiny)
+selectInput("Ano","Ano:", choices=c("1996-2013",sort(unique(idade$Ano))),selected = "2013")
+selectInput("Causa","Causa da morte:", choices=unique(idade$Causa),selected="Melanoma e outras(os) neoplasias malignas da pele")
+selectInput("Estado","Estado:", choices=c("Brasil",sort(unique(idade$Estado))),selected="Brasil")
+
+```
+
+
+```{r,echo=FALSE}
+library(ggplot2)
+curva <- function(Causa="Micoses",Estado,Ano)
+  {
+  Estado1 <- c()
+  if (Estado=="Brasil")
+  {
+    Estado1 <- unique(idade$Estado)
+  } else {
+    Estado1 <- Estado
+  }
+  
+  Ano1 <- c()
+  if (Ano=="1996-2013")
+  {
+    Ano1 <- unique(idade$Ano)
+  } else {
+    Ano1 <- Ano
+  }
+  
+  
+  sexo=c("Feminino","Masculino")
+  temp <- idade[idade$Causa %in% Causa & idade$SEXO1 %in% sexo & idade$Estado %in% Estado1 & idade$Ano %in% Ano1,]
+  temp$sexoN <- as.factor(as.character(temp$SEXO1))
+  print(head(temp))
+  e <- environment()
+  return(ggplot(temp, aes_string(x="IDADE1", fill="sexoN"),environment=e) +
+  geom_density(alpha=.5) + xlab("Idade") + ylab(" ")+theme(axis.title.y = element_blank(),axis.ticks.y = element_blank(),axis.text.y = element_blank())+
+  guides(fill = guide_legend(title="Sexo")) +
+ labs(title=Causa))
+}
+
+
+
+totaisSexo <- function(Causa="Micoses",Estado,Ano)
+  {
+  sexo=c("Feminino","Masculino")
+  
+   Estado1 <- c()
+  if (Estado=="Brasil")
+  {
+    Estado1 <- unique(idade$Estado)
+  } else {
+    Estado1 <- Estado
+  }
+  
+  Ano1 <- c()
+  if (Ano=="1996-2013")
+  {
+    Ano1 <- unique(idade$Ano)
+  } else {
+    Ano1 <- Ano
+  }
+  
+  temp <- idade[idade$Causa %in% Causa & idade$SEXO1 %in% sexo & idade$Estado %in% Estado1 & idade$Ano %in% Ano1,]
+  tmp <- as.data.frame(table(temp$SEXO1))
+  tmp<- tmp[tmp$Freq>0,]
+  tmp$Porcentagem <- round(tmp[,2]/sum(tmp[,2])*100,0)
+  tmp$Media <- as.numeric(t(round(c(mean(temp[temp$SEXO1=="Masculino","IDADE1"]),mean(temp[temp$SEXO1=="Feminino","IDADE1"])),0)))
+  tmp$Mediana <- as.numeric(t(round(c(median(temp[temp$SEXO1=="Masculino","IDADE1"]),median(temp[temp$SEXO1=="Feminino","IDADE1"])),0)))
+  colnames(tmp) <- c("Sexo","Total de Mortes","%","Média","Mediana")
+  row.names(tmp) <- NULL
+  
+return(tmp)
+}
+```
+
+
+```{r,echo=FALSE,message=TRUE}
+ee <- environment()
+renderPlot(expr=curva(Causa=input$Causa,Estado=input$Estado,Ano=input$Ano), env = ee,width=700,height=800)
+```
+
+
+```{r,echo=FALSE}
+renderTable(totaisSexo(Causa=input$Causa,Estado=input$Estado,Ano=input$Ano))
+```
+
