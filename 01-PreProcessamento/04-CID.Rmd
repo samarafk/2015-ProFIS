@@ -1,0 +1,47 @@
+---
+output: html_document
+---
+
+```{r}
+cidCap <- read.csv("../dados_originais/CID10CSV/CID-10-CAPITULOS.csv",sep=";",encoding="latin1",stringsAsFactors=FALSE)
+cidGrupo <- read.csv("../dados_originais/CID10CSV/CID-10-GRUPOS.csv",sep=";",encoding="latin1",stringsAsFactors=FALSE)
+
+
+cidDados <- data.frame(LetraInic=substring(cidGrupo[,1], 1,1) , NumInic = as.numeric(substring(cidGrupo[,1], 2)), LetraFin = substring(cidGrupo[,2], 1,1),NumFin = as.numeric(substring(cidGrupo[,2], 2)))
+
+
+cidGrupoLista <- list()
+
+for (i in 1:dim(cidDados)[1])
+  {
+  sequencia <- seq(cidDados[i,2],cidDados[i,4])
+  
+  ind <- which(sequencia <=9)
+  
+  Descricao <- cidGrupo[i,3]
+  
+  if (length(ind)>0)
+    {
+      tmp <- paste0(0,sequencia[ind])
+      Cod <- c(paste0(cidDados[i,1],tmp), paste0(cidDados[i,1],sequencia[-ind]))
+      
+    }
+  else
+    {
+    Cod <- paste0(cidDados[i,1],sequencia)
+
+      }
+  
+  cidGrupoLista[[i]] <- Cod
+  
+  
+  }
+
+names(cidGrupoLista) <- cidGrupo$DESCRICAO
+
+
+save(cidGrupoLista,file="../dados_processados/cidGrupoLista.rda")
+
+
+```
+

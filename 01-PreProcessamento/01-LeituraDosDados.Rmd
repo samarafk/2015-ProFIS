@@ -1,0 +1,37 @@
+---
+title: "Leitura do Banco DATASUS"
+output: html_document
+---
+
+Primeiro devemos importar os arquivos .csv de cada estado/ano no R. 
+
+Aqui, consideramos apenas os estados da região sudeste.
+
+
+```{r}
+if (!file.exists("../dados_processados/datasus.Rda"))
+{
+library(data.table)
+
+  arquivos <- list.files("../dados_originais/datasus/CSV") # lista nomes dos arquivos da pasta datasus/CSV
+  arquivosCaminho <- paste0("../dados_originais/datasus/CSV/",arquivos) # cria o caminho para cada arquivo da pasta
+  temp <- lapply(arquivosCaminho, function(x) {
+                   tmp <- fread(x, select=c("TIPOBITO",	"DTOBITO"	,"CODMUNRES", "CODBAIRES", "DTNASC","IDADE",	"SEXO",	"RACACOR",	"ESTCIV", "ESC","CAUSABAS"))
+                   tmp$Estado <- substr(x,start=34,stop=35) #coluna indicando Estado
+                   tmp$Ano <- substr(x,start=36,stop=39) # coluna indicando Ano
+                   return(tmp)
+                }) # lista de data.frame, cada data.frame é um Estado/Ano
+
+
+library(plyr)
+datasus <- rbind.fill(temp)
+
+save(datasus,file="../dados_processados/datasus.Rda")
+}
+
+load("../dados_processados/datasus.Rda")
+
+str(datasus)
+```
+
+

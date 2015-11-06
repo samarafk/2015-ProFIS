@@ -1,0 +1,134 @@
+---
+title: Recodificação das variáveis
+output: html_document
+---
+## Estatísticas descritivas
+
+Aqui faremos estatísticas descritivas
+
+```{r,eval=FALSE}
+load("../dados_processados/datasus.Rda")
+
+
+
+table(datasus$SEXO,useNA="always")
+
+datasus$SEXO1 <- NA
+
+datasus$SEXO1[datasus$SEXO==1] <- "Masculino"
+
+datasus$SEXO1[datasus$SEXO==2] <- "Feminino"
+
+table(datasus$SEXO1,useNA="always")
+
+table(datasus$RACACOR,useNA="always")
+
+datasus$RACACOR1 <- NA
+
+datasus$RACACOR1[datasus$RACACOR==1] <- "Branco"
+datasus$RACACOR1[datasus$RACACOR==2] <- "Preta"
+datasus$RACACOR1[datasus$RACACOR==3] <- "Amarela"
+datasus$RACACOR1[datasus$RACACOR==4] <- "Pardo"
+datasus$RACACOR1[datasus$RACACOR==5] <- "Indigena"
+
+
+table(datasus$RACACOR1)
+
+datasus$ESTCIV1 <- NA
+
+datasus$ESTCIV1[datasus$ESTCIV=="1"] <- "Solteiro"
+datasus$ESTCIV1[datasus$ESTCIV=="2"] <- "Casado"
+datasus$ESTCIV1[datasus$ESTCIV=="3"] <- "Viuvo"
+datasus$ESTCIV1[datasus$ESTCIV=="4"] <- "Separado judicialmente"
+datasus$ESTCIV1[datasus$ESTCIV=="5"] <- "União consensual"
+
+table(datasus$ESTCIV,useNA="always")
+
+table(datasus$ESTCIV1,useNA="always")
+
+table(datasus$ESC,useNA="always")
+
+datasus$ESC1 <- NA
+
+datasus$ESC1[datasus$ESC=="1"] <- "Nenhuma"
+datasus$ESC1[datasus$ESC=="2"] <- "1 a 3 anos"
+datasus$ESC1[datasus$ESC=="3"] <- "4 a 7 anos"
+datasus$ESC1[datasus$ESC=="4"] <- "8 a 11 anos"
+datasus$ESC1[datasus$ESC=="5"] <- "12 ou mais"
+
+
+table(datasus$ESC1,useNA="always")
+
+
+
+table(datasus$ESC,useNA="always")
+
+
+
+```
+
+Idades
+
+
+```{r,eval=FALSE}
+table(datasus$IDADE,useNA="always")
+datasus$IDADE1 <- ifelse(datasus$IDADE ==999,NA,datasus$IDADE)
+```
+
+Vamos agora excluir as observações de pessoas com menos de 1 anos de vida, isto é, vamos considerar apenas códigos de idade maiores que 400.
+```{r,eval=FALSE}
+datasusNovo <- datasus[datasus$IDADE1 >= 400,]
+
+datasusNovo$IDADE1 <- datasusNovo$IDADE1-400
+
+hist(datasusNovo$IDADE1,xlab="Idade",ylab="Frequência",main="Histograma das idades de óbito",col=c("lightblue"))
+```
+
+
+
+A variável CAUSABAS contém a causa básica de morte, conforme a [Classificação Internacional de Doença (CID)](http://cid.ninsaude.com/), 10a. Revisão.
+
+Por exemplo, o código A90 indica Dengue e o código A91 indica febre hemorrágica devida ao vírus da dengue.
+
+
+
+
+
+```{r,eval=FALSE}
+
+
+tmp1 <- as.character(datasusNovo$DTOBITO)
+
+tmp2 <- nchar(tmp1)
+
+table(tmp2)
+
+datasusNovo$DTOBITO1 <- NA
+
+datasusNovo$DTOBITO1[tmp2==7] <- paste0("0",tmp1[tmp2==7])
+datasusNovo$DTOBITO1[tmp2==8] <- tmp1[tmp2==8]
+
+datasusNovo$DTOBITO2 <- as.Date(datasusNovo$DTOBITO1,"%d%m%Y")
+
+
+tmp1a <- as.character(datasusNovo$DTNASC)
+
+tmp2a <- nchar(tmp1a)
+
+table(tmp2a)
+
+datasusNovo$DTNASC1 <- NA
+
+datasusNovo$DTNASC1[tmp2a==7] <- paste0("0",tmp1a[tmp2a==7])
+datasusNovo$DTNASC1[tmp2a==8] <- tmp1a[tmp2a==8]
+
+datasusNovo$DTNASC2 <- as.Date(datasusNovo$DTNASC1,"%d%m%Y")
+
+
+datasus_processado <- datasusNovo[,c("CODBAIRES","CODMUNRES","CAUSABAS","Estado","Ano","SEXO1" ,    "RACACOR1" , "ESTCIV1" , "ESC1",      "IDADE1"  , "DTOBITO2","DTNASC2" )]
+
+save(datasus_processado,file="../dados_processados/datasus_processado.Rda")
+
+```
+
+

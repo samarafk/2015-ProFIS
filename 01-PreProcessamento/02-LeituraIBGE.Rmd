@@ -1,0 +1,14 @@
+---
+title: "Leitura dos dados do IBGE"
+output: html_document
+---
+
+
+```{r}
+
+ibge <- read.csv("../dados_originais/IBGE-Estados_1996_2012.csv",sep=",",header=TRUE)
+
+save(ibge,file="../dados_processados/IBGE.rda")
+```
+
+
