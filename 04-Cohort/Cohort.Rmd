@@ -1,0 +1,1165 @@
+---
+title: "Causas mais comuns de óbito por faixa etária ao longo do tempo"
+output: html_document
+---
+
+
+Para cada faixa etária, as 8 causas mais comuns de óbito foram consideradas. Os gráficos a seguir apresentam a porcentagem do total de óbitos nas causas comuns ao longo do tempo (1996 a 2013). "Causas mal definidas e desconhecidas de mortalidade" não foram incluídas nesta análise.
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+library(ggplot2)
+library(xts)
+library(dygraphs)
+library(DT)
+
+if (!file.exists("../dados_processados/idade1_4.Rda")|!file.exists("../dados_processados/idade5_9.Rda")
+    |!file.exists("../dados_processados/idade10_14.Rda")| !file.exists("../dados_processados/idade15_19.Rda")
+    |!file.exists("../dados_processados/idade20_24.Rda")| !file.exists("../dados_processados/idade25_29.Rda")
+    |!file.exists("../dados_processados/idade30_34.Rda")| !file.exists("../dados_processados/idade35_39.Rda")
+    |!file.exists("../dados_processados/idade40_49.Rda")| !file.exists("../dados_processados/idade50_59.Rda")
+    |!file.exists("../dados_processados/idade60_69.Rda")| !file.exists("../dados_processados/idade70_79.Rda")
+    |!file.exists("../dados_processados/idade80_89.Rda")| !file.exists("../dados_processados/idade90.Rda"))
+
+{
+
+load("../dados_processados/idade.Rda")
+
+idade <- idade[-which(idade$Causa == "Causas mal definidas e desconhecidas de mortalidade"),]
+    
+}
+```
+  
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade1_4.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=1 & idade$IDADE1<5,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade1_4.Rda")
+
+}
+```
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade5_9.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=5 & idade$IDADE1<10,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade5_9.Rda")
+
+}
+```
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade10_14.Rda"))
+
+{
+
+tt <- idade[idade$IDADE1>=10 & idade$IDADE1<15,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade10_14.Rda")
+
+}
+```
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade15_19.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=15 & idade$IDADE1<20,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade15_19.Rda")
+
+}
+```
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade20_24.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=20 & idade$IDADE1<25,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade20_24.Rda")
+
+}
+```
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade25_29.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=25 & idade$IDADE1<30,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade25_29.Rda")
+
+}
+```
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade30_34.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=30 & idade$IDADE1<35,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade30_34.Rda")
+
+}
+```
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade35_39.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=35 & idade$IDADE1<40,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade35_39.Rda")
+
+}
+```
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade40_49.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=40 & idade$IDADE1<50,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade40_49.Rda")
+
+}
+```
+
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade50_59.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=50 & idade$IDADE1<60,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade50_59.Rda")
+
+}
+```
+
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade60_69.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=60 & idade$IDADE1<70,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade60_69.Rda")
+
+}
+```
+
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade70_79.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=70 & idade$IDADE1<80,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade70_79.Rda")
+
+}
+```
+
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade80_89.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=80 & idade$IDADE1<90,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade80_89.Rda")
+
+}
+```
+
+
+
+
+```{r,echo=FALSE,message=FALSE,eval=TRUE}
+if (!file.exists("../dados_processados/idade90.Rda"))
+
+{
+tt <- idade[idade$IDADE1>=90,c("Causa","Ano")]
+tt <- tt[complete.cases(tt),]
+a <- as.data.frame(table(tt$Causa))
+a <- a[order(a[,2],decreasing=TRUE),]
+causasPrinc <- as.character(a[1:8,1]) # selecionando as 8 causas mais comuns
+n <- dim(tt)[1]
+tmp <- tt[tt$Causa %in% causasPrinc,]
+
+tmp0 <- as.data.frame(table(tmp$Causa,tmp$Ano))
+colnames(tmp0) <- c("Causa","Ano","Freq")
+
+tmp1 <- as.data.frame(table(tmp$Ano))
+colnames(tmp1) <- c("Ano","TotaldeMortes")
+
+tmp2 <- merge(tmp0,tmp1)
+
+tmp2$Porcentagem <- round((tmp2$Freq/tmp2$TotaldeMortes)*100,2)
+tmp2$Ano <- as.numeric(as.character(tmp2$Ano))
+
+save(tmp2,file="../dados_processados/idade90.Rda")
+
+}
+```
+
+
+
+
+
+
+
+
+
+## De 1 a 4 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+load("../dados_processados/idade1_4.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+
+
+
+```{r,echo=FALSE,eval=FALSE}
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+
+```{r,echo=FALSE,eval=FALSE}
+library(ggvis)
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+tmp2 %>% ggvis(~Ano, ~Porcentagem, stroke = ~Causa)%>%
+  layer_lines() %>% add_tooltip(all_values, "hover") %>% hide_legend(scales="stroke")
+
+```
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,eval=FALSE}
+ee <- environment()
+renderDataTable(tmp2, env = ee, quoted=FALSE,options = list(pageLength=8))
+```
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 5 a 9 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade5_9.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+```{r,echo=FALSE,eval=FALSE}
+
+
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+```{r,echo=FALSE,eval=FALSE}
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+tmp2 %>% ggvis(~Ano, ~Porcentagem, stroke = ~Causa)%>%
+  layer_lines() %>% add_tooltip(all_values, "hover") %>% hide_legend(scales="stroke")
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 10 a 14 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade10_14.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+```{r,echo=FALSE,eval=FALSE}
+
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+```{r,echo=FALSE,eval=FALSE}
+library(ggvis)
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+tmp2 %>% ggvis(~Ano, ~Porcentagem, stroke = ~Causa)%>%
+  layer_lines() %>% add_tooltip(all_values, "hover") %>% hide_legend(scales="stroke")
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+## De 15 a 19 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade15_19.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+
+```
+
+
+```{r,echo=FALSE,eval=FALSE}
+
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+```{r,echo=FALSE,eval=FALSE}
+library(ggvis)
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+
+
+tmp2 %>% ggvis(~Ano, ~Porcentagem, stroke = ~Causa)%>%
+  layer_lines() %>% add_tooltip(all_values, "hover") %>% hide_legend(scales="stroke")
+
+```
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+## De 20 a 24 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade20_24.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+```{r,echo=FALSE,eval=FALSE}
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 25 a 29 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade25_29.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+```{r,echo=FALSE,eval=FALSE}
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+## De 30 a 34 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade30_34.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+
+
+
+```{r,echo=FALSE,eval=FALSE}
+
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+## De 35 a 39 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade35_39.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE,eval=FALSE}
+ggplot(tmp2,
+        aes(y=Porcentagem,x=Ano,col=Causa))+
+    geom_line(size=1)+ theme(legend.direction ="vertical",legend.position = "bottom")+guides(fill=guide_legend(ncol=2))
+
+```
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+## Causas de óbito mais comums entre 40 a 49 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade40_49.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 50 a 59 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade50_59.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 60 a 69 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade60_69.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 70 a 79 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade70_79.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+## De 80 a 89 anos de vida
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade80_89.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
+
+
+
+## A partir dos 90 anos de idade
+
+
+```{r,echo=FALSE,message=FALSE,fig.height=8,fig.width=8}
+
+load("../dados_processados/idade90.Rda")
+
+cc <- as.character(unique(tmp2$Causa))
+
+c1 <- xts(x=tmp2[tmp2$Causa %in% cc[1],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[1],"Ano"]))
+c2 <- xts(x=tmp2[tmp2$Causa %in% cc[2],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[2],"Ano"]))
+c3 <- xts(x=tmp2[tmp2$Causa %in% cc[3],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[3],"Ano"]))
+c4 <- xts(x=tmp2[tmp2$Causa %in% cc[4],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[4],"Ano"]))
+c5 <- xts(x=tmp2[tmp2$Causa %in% cc[5],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[5],"Ano"]))
+c6 <- xts(x=tmp2[tmp2$Causa %in% cc[6],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[6],"Ano"]))
+c7 <- xts(x=tmp2[tmp2$Causa %in% cc[7],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[7],"Ano"]))
+c8 <- xts(x=tmp2[tmp2$Causa %in% cc[8],c("Porcentagem")],order.by = yearmon(tmp2[tmp2$Causa %in% cc[8],"Ano"]))
+
+ttt <- cbind(c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6,c7=c7,c8=c8)
+
+dygraph(ttt) %>%
+  dySeries("c1", label = cc[1]) %>%
+  dySeries("c2", label = cc[2]) %>%
+  dySeries("c3", label = cc[3]) %>%
+  dySeries("c4", label = cc[4]) %>%
+  dySeries("c5", label = cc[5]) %>%
+  dySeries("c6", label = cc[6]) %>%
+  dySeries("c7", label = cc[7]) %>%
+  dySeries("c8", label = cc[8]) %>%
+  dyRangeSelector() %>%
+  dyLegend(show = "follow")
+```
+
+
+
+```{r,echo=FALSE}
+datatable(tmp2, options = list(pageLength = 8))
+```
+
